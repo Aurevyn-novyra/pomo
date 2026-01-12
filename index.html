@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    Premium Pomodoro / Focus Timer
+    File: index.html
+    Role: Semantic structure, accessibility, layout scaffold
+  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A premium, distraction-free Pomodoro and Focus Timer for deep work." />
+  <title>Focus Timer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- App Root -->
+  <div id="app" class="app" aria-live="polite">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-title">Focus Timer</h1>
+
+      <!-- Session Type Selector -->
+      <nav class="session-nav" aria-label="Session type selector">
+        <button
+          class="session-btn active"
+          data-session="focus"
+          aria-pressed="true"
+        >
+          Focus
+        </button>
+        <button
+          class="session-btn"
+          data-session="short-break"
+          aria-pressed="false"
+        >
+          Short Break
+        </button>
+        <button
+          class="session-btn"
+          data-session="long-break"
+          aria-pressed="false"
+        >
+          Long Break
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Timer Area -->
+    <main class="timer-area">
+      <!-- Timer Display Wrapper -->
+      <section
+        class="timer-display-wrapper"
+        aria-label="Timer display"
+      >
+        <!-- Circular Progress -->
+        <div class="timer-circle" role="img" aria-label="Remaining time progress">
+          <svg
+            class="progress-ring"
+            width="260"
+            height="260"
+            viewBox="0 0 260 260"
+          >
+            <circle
+              class="progress-ring-bg"
+              cx="130"
+              cy="130"
+              r="120"
+            />
+            <circle
+              class="progress-ring-progress"
+              cx="130"
+              cy="130"
+              r="120"
+            />
+          </svg>
+
+          <!-- Time Text -->
+          <div class="timer-time" id="timerTime" aria-live="assertive">
+            25:00
+          </div>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="timer-controls">
+          <button
+            id="startPauseBtn"
+            class="control-btn primary"
+            aria-label="Start or pause timer"
+          >
+            Start
+          </button>
+          <button
+            id="resetBtn"
+            class="control-btn"
+            aria-label="Reset timer"
+          >
+            Reset
+          </button>
+        </div>
+      </section>
+
+      <!-- Configuration Panel -->
+      <aside class="config-panel" aria-label="Timer configuration">
+        <!-- Presets -->
+        <section class="config-section">
+          <h2 class="config-title">Presets</h2>
+          <div class="preset-buttons">
+            <button class="preset-btn" data-preset="classic">
+              Classic 25 / 5
+            </button>
+            <button class="preset-btn" data-preset="deep">
+              Deep Focus 50 / 10
+            </button>
+            <button class="preset-btn" data-preset="light">
+              Light 15 / 3
+            </button>
+          </div>
+        </section>
+
+        <!-- Duration Slider -->
+        <section class="config-section">
+          <h2 class="config-title">Session Duration</h2>
+          <label for="durationSlider" class="visually-hidden">
+            Session duration in minutes
+          </label>
+          <input
+            type="range"
+            id="durationSlider"
+            min="1"
+            max="420"
+            step="1"
+            value="25"
+            aria-valuemin="1"
+            aria-valuemax="420"
+            aria-valuenow="25"
+          />
+          <div class="slider-value">
+            <span id="durationValue">25</span> minutes
+          </div>
+        </section>
+
+        <!-- Flow Options -->
+        <section class="config-section">
+          <h2 class="config-title">Flow</h2>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="autoStartNext" />
+              Auto-start next session
+            </label>
+          </div>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="autoStartBreaks" />
+              Auto-start breaks
+            </label>
+          </div>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="skipLongBreak" />
+              Skip long breaks
+            </label>
+          </div>
+
+          <div class="option-row">
+            <label>
+              Focus sessions before long break
+              <select id="sessionsBeforeLongBreak" aria-label="Sessions before long break">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <!-- Sound Controls -->
+        <section class="config-section">
+          <h2 class="config-title">Sound</h2>
+
+          <div class="option-row">
+            <label for="focusSoundSelect">Focus Sound</label>
+            <select id="focusSoundSelect">
+              <option value="none">None</option>
+              <option value="rain">Rain</option>
+              <option value="white-noise">White Noise</option>
+              <option value="cafe">Cafe</option>
+              <option value="wind">Wind / Nature</option>
+            </select>
+          </div>
+
+          <div class="option-row">
+            <label for="soundVolume">Volume</label>
+            <input
+              type="range"
+              id="soundVolume"
+              min="0"
+              max="100"
+              step="1"
+              value="50"
+            />
+          </div>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="muteAlerts" />
+              Mute alerts
+            </label>
+          </div>
+        </section>
+
+        <!-- Appearance -->
+        <section class="config-section">
+          <h2 class="config-title">Appearance</h2>
+
+          <div class="option-row">
+            <label for="accentColor">Accent Color</label>
+            <select id="accentColor">
+              <option value="blue">Blue</option>
+              <option value="purple">Purple</option>
+              <option value="green">Green</option>
+              <option value="orange">Orange</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+
+          <div class="option-row">
+            <label for="focusMode">Focus Mode</label>
+            <select id="focusMode">
+              <option value="soft">Soft Focus</option>
+              <option value="deep">Deep Focus</option>
+              <option value="zen">Zen Mode</option>
+            </select>
+          </div>
+
+          <div class="option-row">
+            <label for="displayStyle">Timer Style</label>
+            <select id="displayStyle">
+              <option value="digital">Digital</option>
+              <option value="circular">Circular</option>
+              <option value="hybrid" selected>Hybrid</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Accessibility & Controls -->
+        <section class="config-section">
+          <h2 class="config-title">Controls</h2>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="enableShortcuts" checked />
+              Enable keyboard shortcuts
+            </label>
+          </div>
+
+          <div class="option-row">
+            <label>
+              <input type="checkbox" id="focusLock" />
+              Focus lock (disable reset during focus)
+            </label>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <!-- Footer / Stats -->
+    <footer class="app-footer">
+      <section class="stats" aria-label="Daily statistics">
+        <div class="stat-item">
+          <span class="stat-label">Today</span>
+          <span class="stat-value" id="todayFocusTime">0m</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Sessions</span>
+          <span class="stat-value" id="completedSessions">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Streak</span>
+          <span class="stat-value" id="streakCount">0</span>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+</body>
+</html>
